@@ -1,0 +1,7 @@
+package controller.action;
+
+public class AddAction {
+	@Override
+	public  void execute(HttpServletRequest request, HttpServlet respsonse)
+
+}

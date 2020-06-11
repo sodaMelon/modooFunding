@@ -1,0 +1,104 @@
+package dao;
+
+import java.util.List;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+import org.apache.ibatis.session.SqlSessionFactory;
+
+import dto.Member;
+
+
+public class MySqlMemberDao implements MemberDao{
+	
+	
+	private static MySqlMemberDao instance = new MySqlMemberDao();
+	private SqlSessionFactory sqlSessionFactory; //마이바티스가 있을때만 쓰는거임
+	//팩토리패턴이란..뭔지..?
+	private DataSource ds;
+	public MySqlMemberDao() {
+		try {
+			InitialContext initctx = new InitialContext();
+			Context ctx=(Context)initctx.lookup("java:/comp/env");
+			ds = (DataSource)ctx.lookup("jdbc/oracle");
+			
+		}catch(NamingException e) {
+			e.printStackTrace();
+		}
+	
+	//ds = DBAction.getInstance().getDataSource();
+		
+	}
+	
+	public static MySqlMemberDao getInstance() {
+		if(instance == null) instance = new MySqlMemberDao();
+		return instance;
+	}
+	
+	
+	@Override
+	public List<Member> selectList() throws Exception {
+/*		      Connection conn = null;
+		      Statement stmt = null;
+		      ResultSet rs = null;
+		      
+		      ArrayList<Member> members = new ArrayList<Member>();
+		      
+		      try {
+		         stmt = conn.createStatement();
+		         rs = stmt.executeQuery("SELECT * FROM MEMBERS ORDER BY MNO ASC");
+
+		         while (rs.next()) {
+		            Member member = new Member();
+		            member.setNo(rs.getInt("mno"));
+		            member.setEmail(rs.getString("email"));
+		            member.setPassword(rs.getString("pwd"));
+		            member.setName(rs.getString("mname"));
+		            member.setCreateDate(rs.getDate("CRE_DATE"));
+		            
+		            members.add(member);
+		         }
+
+		      } catch (Exception e) {
+		         throw e;
+		      } finally {
+		         try {if (rs != null)rs.close();} catch (Exception e) {}
+		         try {if (stmt != null)stmt.close(); } catch (Exception e) {}
+		      }
+*/
+		
+		return null;
+		   }
+	
+
+	@Override
+	public int insert(Member member) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int delete(int no) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Member selectOne(int no) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int update(Member member) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	
+
+}

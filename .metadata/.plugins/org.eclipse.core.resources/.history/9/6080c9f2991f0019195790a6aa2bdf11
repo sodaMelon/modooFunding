@@ -1,0 +1,11 @@
+package service;
+
+import dao.FundingDao;
+import vo.FundingVO;
+
+public class UserFundingService {
+	
+	private FundingVO fundingVO;
+	private FundingDao fundingDao;
+
+}

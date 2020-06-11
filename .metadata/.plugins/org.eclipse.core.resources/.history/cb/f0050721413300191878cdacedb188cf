@@ -1,0 +1,43 @@
+package com.nonage.controller.action;
+
+import java.io.IOException;
+
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.nonage.dao.ProductDAO;
+import com.nonage.dto.ProductVO;
+
+public class ProductDetailAction2 implements Action {
+	
+	//사실 생성자 오버로딩을 해도 될거같은데 졸려서 걍 쓴다 글고 내가 지식이부족한듯ㅋㅋ ㅠㅠ 
+	
+	@Override
+	public void execute(HttpServletRequest request, HttpServletResponse response) 
+			throws ServletException, IOException {
+		String url = "/admin/productDetail.jsp";
+		String pseq = request.getParameter("pseq").trim();
+		ProductDAO productDAO = ProductDAO.getInstance();
+
+		ProductVO 	productDetail = productDAO.getProduct(pseq);
+	
+		request.setAttribute("productDetail", productDetail);
+		
+		String tpage="1";
+		if(request.getParameter("tpage") != null) {
+			tpage = request.getParameter("tpage");
+		}
+		String kindList[] = {"0", "Heels", "boots", "sandal", "sneakers", "sale"};
+		request.setAttribute("tpage", tpage);
+		
+		int index = Integer.parseInt(productDetail.getKind().trim());
+		request.setAttribute("kind", kindList[index]);
+	
+		RequestDispatcher dispatcher =request.getRequestDispatcher(url);
+		dispatcher.forward(request, response);//request.getRequestDispatcher(url).forward(request, response);
+
+	}
+
+}

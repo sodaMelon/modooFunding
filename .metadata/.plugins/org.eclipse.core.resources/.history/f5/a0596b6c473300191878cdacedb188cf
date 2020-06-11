@@ -1,0 +1,29 @@
+package dao;
+
+public interface MemberDao {
+
+
+
+
+		List<Member> selectList() throws Exception;
+		int insert(Member member) throws Exception;
+		int delete(int no) throws Exception;
+		Member selectOne(int no) throws Exception;
+		int update (Member member) throws Exception
+	/*	   Connection conn;
+		   PreparedStatement pstmt;
+
+		   private MemberDao() {
+
+		   }
+
+		   private static MemberDao instance = new MemberDao();
+
+		   public static MemberDao getInstance() {
+		      return instance;
+		   }*/
+		
+	}
+	
+	
+

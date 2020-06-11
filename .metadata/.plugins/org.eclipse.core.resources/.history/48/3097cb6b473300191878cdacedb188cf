@@ -1,0 +1,25 @@
+package dao;
+
+public interface MemberDao {
+
+
+	public class MemberDao {
+
+		List<Member> selectList() throws Exception;
+	/*	   Connection conn;
+		   PreparedStatement pstmt;
+
+		   private MemberDao() {
+
+		   }
+
+		   private static MemberDao instance = new MemberDao();
+
+		   public static MemberDao getInstance() {
+		      return instance;
+		   }*/
+		
+	}
+	
+	
+}

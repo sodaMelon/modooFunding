@@ -1,0 +1,34 @@
+package controller;
+
+
+import controller.action.Action;
+
+public class ActionFactory {
+	private static ActionFactory instance = new ActionFactory();
+	
+	public static ActionFactory getInstance() {
+		return instance;
+	}
+	
+	public Action getAction(String command){ //command =����� ��û,���
+		Action action = null; //��Ʈ�� ��ü. �׼�=��Ʈ��.  ����� ��û�� ó���ϱ� ���� ������ �����ϴ� ����..
+		if(command.equals("index")) {
+			action = new IndexAction();
+		}else if(command.equals("add")) {
+			action = new AddAction();
+		}else if(command.equals("update_form")) {
+			 action = new UpdateFormAction();
+		}else if(command.equals("update")) {
+		action = new UpdateAction();
+		}else if(command.equals("delete")) {
+			action = new DeleteAction();
+		}
+		
+		
+		System.out.println(command);
+		
+		
+		return action;
+	}
+
+}

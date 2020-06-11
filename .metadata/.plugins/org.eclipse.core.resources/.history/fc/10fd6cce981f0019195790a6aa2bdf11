@@ -1,0 +1,362 @@
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import vo.User;
+import vo.AdminUserView;
+
+
+
+public class UserDao {
+   
+      DataSource dataSource;
+
+      @Autowired
+      public UserDao(DataSource dataSource) {
+         this.dataSource = dataSource;
+      }
+
+      public User adminSelectById(String id) throws Exception {
+         User user = null;
+         Connection conn;
+         conn = dataSource.getConnection();
+         Statement stmt = null;
+         ResultSet rs = null;
+
+         try {
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery("SELECT * FROM admin" + " WHERE id='" + id + "'");
+            
+            if (rs.next()) {
+               user = new User();
+               user.setId(rs.getString("id"));
+               user.setPwd(rs.getString("pw"));
+            }
+
+         } catch (Exception e) {
+            throw e;
+         } finally {
+            try {
+               if (rs != null)
+                  rs.close();
+               if (stmt != null)
+                  stmt.close();
+               if (conn != null)
+                  conn.close();
+            } catch (Exception e) {   e.printStackTrace(); }
+         }
+         return user;
+
+      }
+      
+      
+      public User userSelectById(String id) throws Exception {
+         User user = null;
+         Connection conn;
+         conn = dataSource.getConnection();
+         Statement stmt = null;
+         ResultSet rs = null;
+
+         try {
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery("SELECT * FROM user" + " WHERE id='" + id + "'");
+            
+            if (rs.next()) {
+               user = new User();
+               user.setId(rs.getString("id"));
+               user.setPwd(rs.getString("pwd"));
+               user.setName(rs.getString("name"));
+            }
+
+         } catch (Exception e) {
+            throw e;
+         } finally {
+            try {
+               if (rs != null)
+                  rs.close();
+               if (stmt != null)
+                  stmt.close();
+               if (conn != null)
+                  conn.close();
+            } catch (Exception e) {   e.printStackTrace(); }
+         }
+         return user;
+
+      }
+      
+      
+      public User search(String key) throws Exception {//?ù¥Í±? ?èÑ Í¥úÏ∞ÆÍ≥? ?ïÑ?òà ?ã§ Í∞??†∏?ò§?èÑÎ°? 
+         Connection conn;
+         conn = dataSource.getConnection();
+         Statement stmt = null;
+         ResultSet rs = null;
+         User userinfo = null;
+         //List<BoardVO results = new ArrayList<BoardVO>();
+         try {
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery("select * from user where id='"+key+"'" );
+            
+            while (rs.next()) {
+               userinfo = new User(rs.getString("name"),rs.getString("id"),
+                     rs.getString("pwd"),rs.getString("intro"),rs.getString("tel"));
+               }
+         } catch (Exception e) {
+            throw e;
+         } finally {
+               if (rs != null)      rs.close();
+               if (stmt != null)   stmt.close();
+            }
+         return userinfo;
+      }
+      
+      public List<AdminUserView> userSelectAll() throws Exception {
+         Connection conn;
+         conn = dataSource.getConnection();
+         Statement stmt = null;
+         ResultSet rs = null;
+         List<AdminUserView> users = new ArrayList<AdminUserView>();
+         try {
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery("select * from admin_user_view order by id desc;");
+
+            while (rs.next()) {
+               AdminUserView user = new AdminUserView();            
+               user.setId(rs.getString("id"));               
+               user.setPnum(rs.getInt("pnum"));
+               user.setSubject(rs.getString("subject"));
+               user.setFseq(rs.getInt("fseq"));
+               user.setFunded(rs.getInt("funded"));            
+               user.setPayment(rs.getBoolean("payment"));
+
+               users.add(user);
+            }
+
+         } catch (Exception e) {
+            throw e;
+         } finally {
+            try {
+               if (rs != null) rs.close();
+               if (stmt != null) stmt.close();
+               if (conn != null)   conn.close();
+            } catch (Exception e) {
+            }
+
+         }
+         return users;
+      }
+      
+      public List<User> selectAll() throws Exception {
+         Connection conn;
+         conn = dataSource.getConnection();
+         Statement stmt = null;
+         ResultSet rs = null;
+         List<User> users = new ArrayList<User>();
+         try {
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery("select * from user order by id desc;");
+
+            while (rs.next()) {
+                              
+               User user = new User();
+               user.setName(rs.getString("name"));
+               user.setId(rs.getString("id"));
+               user.setPwd(rs.getString("pwd"));
+               user.setUserdrop(rs.getBoolean("userdrop"));
+               user.setUser_img(rs.getString("user_img"));
+               user.setIntro(rs.getString("intro"));
+               user.setTel(rs.getString("tel"));
+               user.setDate_reg(rs.getDate("date_reg"));
+               user.setPlanner_yn(rs.getBoolean("planner_yn"));               
+               user.setFunder_yn(rs.getBoolean("funder_yn"));
+               users.add(user);
+            }
+
+         } catch (Exception e) {
+            throw e;
+         } finally {
+            try {
+               if (rs != null) rs.close();
+               if (stmt != null) stmt.close();
+               if (conn != null)   conn.close();
+            } catch (Exception e) {
+            }
+
+         }
+         return users;
+      }
+
+      
+      
+      public int userInsert(User user) throws Exception{
+         Connection conn;
+         conn = dataSource.getConnection();
+         PreparedStatement stmt = null;
+         try {
+            String sql = "insert into user( name, id, pwd, intro, tel, date_reg) values(  ?, ?, ?, ?, ?, now() );";
+            stmt = conn.prepareStatement(sql);
+            stmt.setString(1, user.getName());//?ãâ?Ñ§?ûÑ
+            stmt.setString(2, user.getId());//?ïÑ?ù¥?îî=?ù¥Î©îÏùºÍ∞? ?à¨?ûÖ //?ó¨Í∏∞ÏÑú Í∞íÏùÑ Î™ªÍ??†∏?ò¥ 
+            stmt.setString(3, user.getPwd());
+            stmt.setString(4, user.getIntro());
+            stmt.setString(5, user.getTel());
+            
+            return stmt.executeUpdate();
+         } catch (Exception e) {
+            throw e;
+         } finally {
+            
+               if (stmt != null) stmt.close();
+               if (conn != null)   conn.close();
+      }
+         
+      }
+
+      public User read(String id) throws Exception {
+         Connection conn;
+         conn = dataSource.getConnection();
+         PreparedStatement stmt = null;
+         ResultSet rs = null;
+         User detail= null;
+         try {
+            stmt = conn.prepareStatement("select * from user where id=?");
+            stmt.setString(1,  id);
+            rs = stmt.executeQuery();
+         
+            while (rs.next()) {
+               detail = new User(
+               rs.getString("id"),
+               rs.getString("pwd"),
+               rs.getString("name"),
+               rs.getBoolean("userdrop"),
+               rs.getString("user_img"),
+               rs.getString("intro"),
+               rs.getString("tel"),
+               rs.getDate("date_reg"),
+               rs.getBoolean("planner_yn"),
+               rs.getBoolean("funder_yn")
+               );
+            
+                     
+               }
+         } catch (Exception e) {
+            throw e;
+         } finally {
+               if (rs != null)      rs.close();
+               if (stmt != null)   stmt.close();
+               if (conn != null)   conn.close();
+            }
+         return detail;
+      }
+
+      public List<AdminUserView> readView(String id) throws Exception {
+         Connection conn;
+         conn = dataSource.getConnection();
+         PreparedStatement stmt = null;
+         ResultSet rs = null;
+         List<AdminUserView> users= new ArrayList<AdminUserView>();
+         try {
+            stmt = conn.prepareStatement("select * from admin_user_view where id=?");
+            stmt.setString(1,  id);
+            rs = stmt.executeQuery();
+         
+            while (rs.next()) {
+               AdminUserView user = new AdminUserView(
+                     rs.getInt("pnum"),
+                     rs.getString("subject"),
+                     rs.getString("id"),   
+                     rs.getInt("fseq"),
+                     rs.getInt("funded"),
+                     rs.getBoolean("payment")
+                     );      
+               users.add(user);
+                     
+               }
+         } catch (Exception e) {
+            throw e;
+         } finally {
+               if (rs != null)      rs.close();
+               if (stmt != null)   stmt.close();
+               if (conn != null)   conn.close();
+            }
+         return users;
+      }
+
+
+
+      public void userUpdate(User userinfo) throws SQLException {
+         Connection conn;
+         conn = dataSource.getConnection();
+         PreparedStatement stmt = null;
+         
+         try {
+            stmt = conn.prepareStatement("update user set name=?, intro=?, tel=? where id=?");
+            stmt.setString(1, userinfo.getName());
+            stmt.setString(2, userinfo.getIntro());
+            stmt.setString(3, userinfo.getTel());
+            stmt.setString(4, userinfo.getId());
+            stmt.executeUpdate();
+            
+         } catch (Exception e) {
+         
+         } finally {   if (stmt != null) stmt.close();
+         if (conn != null)   conn.close();
+            
+            } 
+         }
+
+      public void userUpdatePw(User userinfo) throws SQLException {
+         Connection conn;
+         conn = dataSource.getConnection();
+         PreparedStatement stmt = null;
+         
+         try {
+            stmt = conn.prepareStatement("update user set pwd =? where id=?");
+            stmt.setString(1, userinfo.getPwd());
+   
+            stmt.setString(2, userinfo.getId());
+            stmt.executeUpdate();
+            
+         } catch (Exception e) {
+         
+         } finally {   if (stmt != null) stmt.close();
+         if (conn != null)   conn.close();
+            
+            } 
+         }
+         
+      
+      
+      public void userdrop(String id) throws SQLException {
+          Connection conn;
+          conn = dataSource.getConnection();
+          PreparedStatement stmt = null;
+          
+          try {
+             stmt = conn.prepareStatement("update user set userdrop=1 where id=?");            
+             stmt.setString(1,id);
+             stmt.executeUpdate();
+             
+          } catch (Exception e) {
+          
+          } finally {   
+        	  if (stmt != null) stmt.close();
+        	  if (conn != null)   conn.close();
+             
+             } 
+          }
+      }
+      
+
+
+
+

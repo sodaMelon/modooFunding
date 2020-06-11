@@ -1,0 +1,18 @@
+package dao;
+
+public class MemberDao {
+
+	   Connection conn;
+	   PreparedStatement pstmt;
+
+	   private MemberDAO() {
+
+	   }
+
+	   private static MemberDAO instance = new MemberDAO();
+
+	   public static MemberDAO getInstance() {
+	      return instance;
+	   }
+	
+}

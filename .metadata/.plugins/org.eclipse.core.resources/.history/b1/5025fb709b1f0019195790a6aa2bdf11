@@ -1,0 +1,57 @@
+package dao;
+
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import vo.FundingVO;
+import vo.Project;
+
+public class FundingDao {
+
+	DataSource dataSource;
+
+	@Autowired
+	public FundingDao(DataSource dataSource) {
+		this.dataSource = dataSource;
+	}
+
+	public List<FundingVO> selectbyID(String key) {
+		Connection conn;
+		conn = dataSource.getConnection();
+		Statement stmt = null;
+		ResultSet rs = null;
+		List<Project> results = new ArrayList<Project>();
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("select * from funding where id='" +key+ "'  order by fseq desc;");
+
+			while (rs.next()) {
+				Project project = new Project(rs.getInt("pnum"),rs.getString("id"),rs.getString("subject"));
+				results.add(project);
+			}
+
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+			} catch (Exception e) {
+			}
+			try {
+				if (stmt != null)
+					stmt.close();
+			} catch (Exception e) {
+			}
+		}
+		return results;
+	}
+	
+}

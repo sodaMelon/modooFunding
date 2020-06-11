@@ -1,0 +1,89 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+ <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ include file="/header.jsp"%>
+ <!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<script type="text/javascript">
+function product_search() {
+
+	if (document.frm23.key.value == "") {
+
+		alert("검색 할 상품명을 입력해주세요");
+
+		document.frm23.key.focus();
+
+	} else {
+
+		document.frm23.action = "../doofun/commu/1/" + document.frm23.key.value;
+		document.frm23.submit();
+	}
+}
+</script>
+<title>회원제 게시판</title>
+</head>
+<body>
+<form method="post" name ="frm23">
+검색하기 : <input type="text" name="key"> 
+<input type="button"  value="검색" onclick="product_search()">
+</form>
+<c:if test="${! empty articles }">
+<table border='1'>
+<tr>
+<th>글번호</th>
+<th>제목</th><th>닉네임</th><th>등록일자</th>
+<c:forEach var="p" items="${articles}">
+<tr>
+<td>${p.cseq}</td>
+<%-- <td>${p.pnum}</td> --%>
+
+<td><a href="<c:url value="/user/read/${p.cseq}"/>">${p.csub}</a></td>
+<%-- <td>${p.ccon}</td> --%>
+
+<%-- <td><a href="<c:url value="/user/detail/${1}"/>"> --%>
+
+<td>${p.name}</td>
+<td><fmt:formatDate value="${p.cdate}" pattern="yyyy-MM-dd"/></td>
+</tr>
+</c:forEach>
+</table>
+</c:if>
+
+${paging}
+
+<form action="user/step2" method="post">
+
+
+<c:if test="${ (userSubmit.id==null)}">
+<br> 로그인을 하셔야 글을 작성할 수 있습니다<br>
+<a href="<c:url value="user/userLogin"/>">[로그인]</a>
+</c:if>
+
+
+<c:if test="${! (userSubmit.id==null)}">
+${userSubmit.id } 님 로그인 중입니다
+<a href="<c:url value="user/userLogout"/>">[로그아웃]</a>
+<br>
+<a href="<c:url value="/user/step2"/>">글쓰기(get방식)</a>
+<input type="submit" value="글쓰기">  <br>get post 현재상태 둘다 ok</c:if>
+
+<a href="/doofun/user/step2">테스트용 글쓰기4(get방식)</a>
+
+<br><b>개발 진척도</b>
+<br>이페이지에 할거 1검색엔진추가
+<br>2.페이지 기능 추가 한페이지에 n개씩
+<br>3.post아닐때 mod랑 del /main튕김
+<br>4.ci에디터 장착
+
+
+
+
+<br>저번주 개발issue:수정이 안되는문제->갑자기해결되버렸습니다........(^^)
+</form>
+
+
+</body>
+</html>

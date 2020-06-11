@@ -1,0 +1,18 @@
+package service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import dao.FundingDao;
+import vo.FundingVO;
+
+public class UserFundingService {
+	
+	private FundingVO fundingVO;
+	private FundingDao fundingDao;
+	
+	@Autowired
+	public UserFundingService(FundingDao fundingDao) {
+		this.fundingDao =fundingDao ;	
+	}
+
+}

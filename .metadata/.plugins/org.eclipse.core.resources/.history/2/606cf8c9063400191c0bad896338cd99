@@ -1,0 +1,102 @@
+package dao;
+
+import java.io.InputStream;
+import java.util.List;
+
+import javax.naming.Context;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+import javax.sql.DataSource;
+
+import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+import org.apache.ibatis.io.Resources;
+
+import dto.Member;
+
+public class MySqlMemberDao implements MemberDao {
+	private static MySqlMemberDao instance = new MySqlMemberDao();
+	// 마이바티스에 대한 라이브러리가 있어야 import 가능
+	// Factory Pattern (객체를 만들어놓고 필요할 때 사용)
+	private SqlSessionFactory sqlSessionFactory;
+	private DataSource ds;
+
+	public MySqlMemberDao() {
+//		/*
+		try {
+			InitialContext initctx = new InitialContext();
+			Context ctx = (Context) initctx.lookup("java:/comp/env");
+			ds = (DataSource) ctx.lookup("jdbc/oracle");
+		} catch (NamingException e) {
+			e.printStackTrace();
+		}
+
+		// SqlSessionFactory
+		try {
+			String resource = "dao/mybatis-config.xml";
+			InputStream inputStream = Resources.getResourceAsStream(resource);
+			sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+//	     */
+//		ds = DBAction.getInstance().getDataSource();
+
+	}
+
+	public static MySqlMemberDao getInstance() {
+		if (instance == null)
+			instance = new MySqlMemberDao();
+		return instance;
+	}
+
+	@Override
+	public List<Member> selectList() throws Exception {
+
+		/*
+		 * Connection connection = null; Statement stmt = null; ResultSet rs = null; try
+		 * { connection = ds.getConnection(); stmt = connection.createStatement(); rs =
+		 * stmt.executeQuery( "SELECT MNO,MNAME,EMAIL,CRE_DATE" + " FROM MEMBERS" +
+		 * " ORDER BY MNO ASC"); ArrayList<Member> members = new ArrayList<Member>();
+		 * while(rs.next()) { members.add(new Member() .setNo(rs.getInt("MNO"))
+		 * .setName(rs.getString("MNAME")) .setEmail(rs.getString("EMAIL"))
+		 * .setCreatedDate(rs.getDate("CRE_DATE")) ); } return members; } catch
+		 * (Exception e) { throw e; } finally { try {if (rs != null) rs.close();}
+		 * catch(Exception e) {} try {if (stmt != null) stmt.close();} catch(Exception
+		 * e) {} try {if (connection != null) connection.close();} catch(Exception e) {}
+		 * }
+		 */
+		SqlSession sqlSession = sqlSessionFactory.openSession();
+		try {
+			return sqlSession.selectList("dao.MemberDao.selectList");
+		} finally {
+			sqlSession.close();
+		}
+	}
+
+	@Override
+	public int insert(Member member) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int delete(int no) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Member selectOne(int no) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int update(Member member) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+}

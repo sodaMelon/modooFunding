@@ -1,0 +1,58 @@
+package dao;
+
+import java.util.List;
+
+import javax.sql.DataSource;
+
+import dto.Member;
+
+public class MysqlMemberDao implements MemberDao{
+	
+	private static MysqlMemberDao instance = new MysqlMemberDao();
+	private DataSource ds;
+	public MysqlMemberDao() {
+		
+	}
+	
+	@Override
+	public List<Member> selectList() throws Exception {
+		try {
+			InitialContext initctx = new InitialContext();
+			ctx=(Context)initctx.lookup("java:/comp/env");
+			ds = (DataSource)ctx.lookup("jdbc/oracle");
+			
+		}catch(NamingException e) {
+			e.printStackTrace();
+		}
+		
+	//ds = DBAction.getInstance().getDataSource();
+	}
+
+	@Override
+	public int insert(Member member) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int delete(int no) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public Member selectOne(int no) throws Exception {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int update(Member member) throws Exception {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+
+	
+
+}

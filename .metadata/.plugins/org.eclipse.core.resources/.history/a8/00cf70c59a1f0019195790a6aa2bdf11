@@ -1,0 +1,28 @@
+package service;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import dao.FundingDao;
+import vo.FundingVO;
+
+public class UserFundingService {
+	
+	private FundingVO fundingVO;
+	private FundingDao fundingDao;
+	
+	@Autowired
+	public UserFundingService(FundingDao fundingDao) {
+		this.fundingDao =fundingDao ;	
+		
+	//read funding where id="key"
+		public List<FundingVO> readAll(String key){
+			List<FundingVO> results = fundingDao.select(key);
+			return results;
+		}
+		
+		
+	}
+
+}

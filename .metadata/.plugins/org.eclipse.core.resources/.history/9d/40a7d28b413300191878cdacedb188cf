@@ -1,0 +1,72 @@
+package com.nonage.controller;
+
+import com.nonage.admin.controller.action.AdminAction;
+import com.nonage.admin.controller.action.AdminFormAction;
+import com.nonage.admin.controller.action.AdminOrderListAction;
+import com.nonage.admin.controller.action.AdminProductListAction;
+import com.nonage.admin.controller.action.AdminProductUpdateAction;
+import com.nonage.admin.controller.action.AdminProductUpdateFormAction;
+import com.nonage.admin.controller.action.AdminProductWriteAction;
+import com.nonage.admin.controller.action.AdminProductWriteFormAction;
+import com.nonage.admin.controller.action.AdminQnaDetailAction;
+import com.nonage.admin.controller.action.AdminQnaListAction;
+import com.nonage.admin.controller.action.AdminQnaWriteAction;
+import com.nonage.admin.controller.action.AdminQnaWriteFormAction;
+import com.nonage.controller.action.Action;
+import com.nonage.controller.action.CartDeleteAction;
+import com.nonage.controller.action.CartInsertAction;
+import com.nonage.controller.action.CartListAction;
+import com.nonage.controller.action.ContractAction;
+import com.nonage.controller.action.FindZipNumAction;
+import com.nonage.controller.action.IdCheckFormAction;
+import com.nonage.controller.action.IndexAction;
+import com.nonage.controller.action.JoinAction;
+import com.nonage.controller.action.JoinFormAction;
+import com.nonage.controller.action.LoginAction;
+import com.nonage.controller.action.LoginFormAction;
+import com.nonage.controller.action.LogoutAction;
+import com.nonage.controller.action.MyPageAction;
+import com.nonage.controller.action.OrderAllAction;
+import com.nonage.controller.action.OrderDetailAction;
+import com.nonage.controller.action.OrderInsertAction;
+import com.nonage.controller.action.OrderListAction;
+import com.nonage.controller.action.ProductDetailAction;
+import com.nonage.controller.action.ProductDetailAction2;
+import com.nonage.controller.action.ProductKindAction;
+import com.nonage.controller.action.QnaDetailAction;
+import com.nonage.controller.action.QnaListAction;
+import com.nonage.controller.action.QnaWriteFormAction;
+import com.nonage.controller.action.WorkerIndex;
+
+public class ActionFactory {
+	private static ActionFactory instance = new ActionFactory();
+	
+	public static ActionFactory getInstance() {
+		return instance;
+	}
+	
+	public Action getAction(String command){ //command =����� ��û,���
+		Action action = null; //��Ʈ�� ��ü. �׼�=��Ʈ��.  ����� ��û�� ó���ϱ� ���� ������ �����ϴ� ����..
+		if(command.equals("index")) {
+			action = new IndexAction();
+		}else if(command.equals("add")) {
+			action = new AddAction();
+		}else if(command.equals("update_form")) {
+			 action = new UpdateFormAction();
+		}else if(command.equals("update")) {
+		action = new UpdateAction();
+		}else if(command.equals("delete")) {
+			action = new DeleteAction();
+		}
+		
+		
+		
+		
+		
+		
+	
+
+		return action;
+	}
+
+}

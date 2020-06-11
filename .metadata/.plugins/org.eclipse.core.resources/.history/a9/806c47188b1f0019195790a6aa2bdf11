@@ -1,0 +1,28 @@
+package service;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import dao.ProjectDao;
+import vo.Project;
+import vo.ProjectView;
+
+public class UserProjectService {
+	
+	private Project projectVO;
+	private ProjectDao projectDao;
+	
+	@Autowired
+	public UserProjectService(ProjectDao projectDao) {
+		this.projectDao=projectDao;
+	}
+	
+	//read all subject
+	public List<Project> readAll() throws SQLException {
+		List<Project> results= projectDao.selectAll();
+		return results;
+	}
+
+}

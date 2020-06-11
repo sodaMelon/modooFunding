@@ -1,0 +1,42 @@
+package controller;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import dao.FundingDao;
+import service.UserFundingService;
+import vo.FundingVO;
+
+@Controller
+public class U_FundingController {
+	private UserFundingService userFundingService;
+
+	public void setUserFundingService(UserFundingService userFundingService) {
+		this.userFundingService = userFundingService;
+	}
+
+	private FundingDao fundingDao;
+	public void setFundingDao(FundingDao fundingDao) {
+		this.fundingDao = fundingDao;
+	}
+
+
+	
+	// 펀딩한 프로젝트 보기
+
+	@RequestMapping(value = "/user/lookmine", method = RequestMethod.POST)
+	public String lookmine(@RequestParam(value = "id", defaultValue = "") String id, Model model) throws SQLException {
+
+		List<FundingVO> FundingVOs;
+		FundingVOs = userFundingService.readAll();
+		model.addAttribute("projectRequest", FundingVOs); //일단 jsp에서 쓸 변수명 고정
+		return "project/lookmine";
+	}
+
+}

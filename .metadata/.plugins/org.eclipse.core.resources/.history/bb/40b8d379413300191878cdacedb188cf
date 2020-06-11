@@ -1,0 +1,134 @@
+package com.nonage.controller;
+
+import com.nonage.admin.controller.action.AdminAction;
+import com.nonage.admin.controller.action.AdminFormAction;
+import com.nonage.admin.controller.action.AdminOrderListAction;
+import com.nonage.admin.controller.action.AdminProductListAction;
+import com.nonage.admin.controller.action.AdminProductUpdateAction;
+import com.nonage.admin.controller.action.AdminProductUpdateFormAction;
+import com.nonage.admin.controller.action.AdminProductWriteAction;
+import com.nonage.admin.controller.action.AdminProductWriteFormAction;
+import com.nonage.admin.controller.action.AdminQnaDetailAction;
+import com.nonage.admin.controller.action.AdminQnaListAction;
+import com.nonage.admin.controller.action.AdminQnaWriteAction;
+import com.nonage.admin.controller.action.AdminQnaWriteFormAction;
+import com.nonage.controller.action.Action;
+import com.nonage.controller.action.CartDeleteAction;
+import com.nonage.controller.action.CartInsertAction;
+import com.nonage.controller.action.CartListAction;
+import com.nonage.controller.action.ContractAction;
+import com.nonage.controller.action.FindZipNumAction;
+import com.nonage.controller.action.IdCheckFormAction;
+import com.nonage.controller.action.IndexAction;
+import com.nonage.controller.action.JoinAction;
+import com.nonage.controller.action.JoinFormAction;
+import com.nonage.controller.action.LoginAction;
+import com.nonage.controller.action.LoginFormAction;
+import com.nonage.controller.action.LogoutAction;
+import com.nonage.controller.action.MyPageAction;
+import com.nonage.controller.action.OrderAllAction;
+import com.nonage.controller.action.OrderDetailAction;
+import com.nonage.controller.action.OrderInsertAction;
+import com.nonage.controller.action.OrderListAction;
+import com.nonage.controller.action.ProductDetailAction;
+import com.nonage.controller.action.ProductDetailAction2;
+import com.nonage.controller.action.ProductKindAction;
+import com.nonage.controller.action.QnaDetailAction;
+import com.nonage.controller.action.QnaListAction;
+import com.nonage.controller.action.QnaWriteFormAction;
+import com.nonage.controller.action.WorkerIndex;
+
+public class ActionFactory {
+	private static ActionFactory instance = new ActionFactory();
+	
+	public static ActionFactory getInstance() {
+		return instance;
+	}
+	
+	public Action getAction(String command){ //command =사용자 요청,명령
+		Action action = null; //컨트롤 객체. 액션=컨트롤.  사용자 요청을 처리하기 위한 내용을 저장하는 역할..
+		if(command.equals("index")) {
+			action = new IndexAction();
+		}else if(command.equals("contract")) {
+			action = new ContractAction();
+		}else if (command.equals("join_form")) {
+			action = new JoinFormAction();
+		}else if (command.equals("join")) {
+			action = new JoinAction();
+		}else if (command.equals("id_check_form")) {
+			action = new IdCheckFormAction();
+		}else if (command.equals("find_zip_num")) {
+			action = new FindZipNumAction();
+		}else if (command.equals("login_form")) {
+			action = new LoginFormAction();
+		}else if (command.equals("login")) {
+			action = new LoginAction();
+		}else if (command.equals("logout")) {
+			action = new LogoutAction();
+		}else if (command.equals("category")) {
+			action = new ProductKindAction();
+		}else if(command.equals("product_detail")) {
+			action = new ProductDetailAction();
+		}else if(command.equals("cart_insert")) {
+			action = new CartInsertAction();
+		}else if(command.equals("cart_list")) {
+			action = new CartListAction();
+		}else if(command.equals("cart_delete")) {
+			action = new CartDeleteAction();
+		}else if(command.equals("order_insert")) {
+			action = new OrderInsertAction();
+		}else if(command.equals("order_list")) {
+			action = new OrderListAction();
+		}else if(command.equals("mypage")) {
+			action = new MyPageAction();
+		}else if(command.equals("order_detail")) {
+			action = new OrderDetailAction();
+		}else if(command.equals("orderall")) {
+			action = new OrderAllAction();
+		}else if(command.equals("qna_list")) {
+			action = new QnaListAction();
+		}else if(command.equals("qna_write")) {
+			action = new QnaWriteFormAction();
+		}else if(command.equals("qna_detail")) {
+			action = new QnaDetailAction();
+		}else if(command.equals("admin_login_form")) {
+			action = new AdminFormAction();
+		}else if (command.equals("admin_login")) {
+			action = new AdminAction();
+		}else if (command.equals("worker_index")) {
+			action = new WorkerIndex();
+		}else if (command.equals("worker_product")) {
+		action = new AdminProductListAction();}
+		else if (command.equals("worker_product_detail")) {
+		action = new ProductDetailAction2();
+		}else if (command.equals("admin_product_write_form")) {
+		action = new AdminProductWriteFormAction();
+		}else if (command.equals("admin_product_write")) {
+		action = new AdminProductWriteAction();
+		}else if (command.equals("admin_product_update_form")) {
+		action = new  AdminProductUpdateFormAction();
+		}else if (command.equals("admin_product_update")) {
+			action = new AdminProductUpdateAction();			
+		}else if (command.equals("admin_order_list")) {
+			action = new AdminOrderListAction();
+		}else if (command.equals("admin_qna_list")) {
+			action = new AdminQnaListAction();
+		}else if(command.equals("admin_qna_detail")) {
+			action = new AdminQnaDetailAction();
+		}else if(command.equals("admin_qna_write_form")) {
+			 action = new AdminQnaWriteFormAction();
+		}else if(command.equals("admin_qna_write")) {
+		action = new AdminQnaWriteAction();
+		}
+		
+		
+		
+		
+		
+		
+	
+
+		return action;
+	}
+
+}

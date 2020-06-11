@@ -1,0 +1,21 @@
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+
+public class MemberDao {
+
+	   Connection conn;
+	   PreparedStatement pstmt;
+
+	   private MemberDao() {
+
+	   }
+
+	   private static MemberDao instance = new MemberDao();
+
+	   public static MemberDao getInstance() {
+	      return instance;
+	   }
+	
+}

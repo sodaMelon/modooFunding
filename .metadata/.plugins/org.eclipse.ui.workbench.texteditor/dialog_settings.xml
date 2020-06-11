@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<section name="Workbench">
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
+		<item value="false" key="isRegEx"/>
+		<item value="" key="selection"/>
+		<item value="true" key="casesensitive"/>
+		<item value="false" key="incremental"/>
+		<item value="true" key="wrap"/>
+		<item value="false" key="wholeword"/>
+		<list key="findhistory">
+			<item value="body"/>
+			<item value="article"/>
+			<item value="position"/>
+			<item value="con"/>
+			<item value="fundinglistcon"/>
+			<item value="btn"/>
+			<item value="btn_next"/>
+			<item value="더보기"/>
+			<item value="no_result"/>
+			<item value="if"/>
+			<item value="r"/>
+			<item value="when"/>
+			<item value="footer"/>
+			<item value="projectlist"/>
+			<item value="project"/>
+		</list>
+		<list key="replacehistory">
+			<item value="newComm"/>
+			<item value="400자"/>
+			<item value=""/>
+			<item value="닉네임"/>
+			<item value="이메일"/>
+			<item value="name"/>
+			<item value="SearchById"/>
+			<item value="temp2"/>
+			<item value="heart"/>
+			<item value="&lt;div class =&quot;pj_part&quot;&gt;"/>
+			<item value="class"/>
+			<item value="catekey"/>
+			<item value="frmpj"/>
+			<item value="form"/>
+			<item value="a_pj"/>
+		</list>
+	</section>
+	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
+		<item value="960" key="DIALOG_WIDTH"/>
+		<item value="1|맑은 고딕|9.0|0|WINDOWS|1|-12|0|0|0|400|0|0|0|1|0|0|0|0|맑은 고딕" key="DIALOG_FONT_NAME"/>
+		<item value="900" key="DIALOG_HEIGHT"/>
+		<item value="1928" key="DIALOG_X_ORIGIN"/>
+		<item value="88" key="DIALOG_Y_ORIGIN"/>
+	</section>
+</section>

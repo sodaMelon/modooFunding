@@ -1,0 +1,10 @@
+package vo;
+
+public class FundingVO {
+int pnum;
+int fseq;
+int funded;
+int gift_num;
+String id;
+int payment; // 미결제 결제 취소
+}

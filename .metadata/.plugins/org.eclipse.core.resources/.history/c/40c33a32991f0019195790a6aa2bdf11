@@ -1,0 +1,52 @@
+package controller;
+
+import java.sql.SQLException;
+import java.util.List;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+
+import dao.ProjectDao;
+import service.UserProjectService;
+import vo.Project;
+
+@Controller
+public class U_ProjectController {
+	private UserProjectService userProjectService;
+
+	public void setUserProjectService(UserProjectService userProjectService) {
+		this.userProjectService = userProjectService;
+	}
+	
+	private ProjectDao projectDao;
+	public void setProjectDao(ProjectDao projectDao) {
+		this.projectDao = projectDao;
+	}
+
+//프로젝트 둘러보기	
+	@RequestMapping(value = "/lookaround")
+	public String list(Model model) {
+		List<Project> ProjectVOs;
+		try {
+			ProjectVOs = userProjectService.readAll();
+			model.addAttribute("projectRequest", ProjectVOs);
+		} catch (SQLException e) {		e.printStackTrace();}
+		
+		return "project/userView";
+	}
+//디테일 둘러보기
+	
+//펀딩한 프로젝트 보기
+ 
+	@RequestMapping(value = "/user/lookmine" , method = RequestMethod.POST)
+	public String lookmine(@RequestParam(value = "id", defaultValue = "") String id ,Model model) throws SQLException {
+	
+		List<Project> ProjectVOs;
+		ProjectVOs = userProjectService.readAll();
+		model.addAttribute("projectRequest", ProjectVOs);
+		return "project/lookmine";
+	}
+}

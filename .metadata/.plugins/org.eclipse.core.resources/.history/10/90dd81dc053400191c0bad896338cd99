@@ -1,0 +1,25 @@
+package controller.action;
+
+import java.io.IOException;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+
+import dao.MemberDao;
+import dao.MySqlMemberDao;
+import dto.Member;
+
+public class AddAction implements Action {
+	@Override
+	public void execute(HttpServletRequest request, HttpServlet respsonse) throws ServletException, IOException{
+		String url = "member/MemberForm.jsp";
+		if (request.getParameter("email") !=null) {
+			MemberDao msmd = MySqlMemberDao.getInstance();
+			try {
+				msmd.insert(new Member().set
+			}
+		}
+	}
+
+}

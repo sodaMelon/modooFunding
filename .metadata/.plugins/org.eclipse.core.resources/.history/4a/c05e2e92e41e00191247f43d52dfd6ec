@@ -1,0 +1,215 @@
+package dao;
+
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
+import vo.Board;
+
+public class BoardDao {
+
+	DataSource dataSource;
+
+	@Autowired
+	public BoardDao(DataSource dataSource) {
+		this.dataSource = dataSource;
+	}
+	
+	static int view_rows = 5; //페이지의 개수
+	static int counts = 5;//한 페이지에 나타낼 상품의 갯수
+	public String pageNumber(int tpage, String name) {
+		String str = "";
+		int total_page = totalRecord(name);
+		int page_count = total_page / counts +1;
+		if (total_page % counts == 0) {
+			page_count--;
+		}
+		if (tpage < 1) {
+			tpage = 1;
+		}
+		int start_page = tpage - (tpage % view_rows)+1;
+		int end_page = start_page + (counts-1);
+		if (end_page > page_count) {
+			end_page = page_count;
+		}
+		if(start_page > view_rows) {
+			str += "<a href='NonageServlet?command=worker_product&tpage=1&key=\'>" + name + 
+					"'>&lt;&lt;</a>&nbsp;&nbsp;";
+			str += "<a href='NonageServlet?command=worker_productt&tpage=" + (start_page - 1);
+			str += "&key=<%=product_name%>'>&lt;</a>&nbsp;&nbsp;";			
+		}
+		for(int i= start_page; i<=end_page; i++) {
+			if (i==tpage) {
+				str += "<font color = red> [" + i + "] &nbsp;&nbsp;</font>";
+			}else {
+				str += "<a href='NonageServlet?command=worker_product&tpage=" 
+						+ i + "&key=" + name + "'>[" + i + "]</a> &nbsp; &nbsp;";
+			}
+		}		
+		
+		if (page_count > end_page) {
+			str += "<a href='NonageServlet?command=worker_product&tpage="
+		+ (end_page + 1) + "&key=" + name + "'> &gt; </a> &nbsp;";
+			str += "<a href='NonageServlet?command=worker_product&tpage="
+					+ (page_count) + "&key=" + name + "'> &gt; </a> &nbsp;";						
+		}
+		return str;
+	}
+	
+	public int totalRecord(String csub) {
+		int total_pages = 0;
+		String sql = "select count(*) from user where csub like '%" + csub + "%'";
+		Connection conn = null;
+		PreparedStatement pstmt = null;
+		ResultSet pageset = null;
+		try {
+			conn= dataSource.getConnection();
+			pstmt=conn.prepareStatement(sql);
+			pageset=pstmt.executeQuery(); //실행
+			if(pageset.next()) {			
+						total_pages	= pageset.getInt(1);		
+			}
+		}catch(Exception e) {
+			e.printStackTrace();
+		}finally {
+			try{if (pstmt != null)pstmt.close();} catch(Exception e) {}
+			try{if (conn != null)conn.close();} catch(Exception e) {}
+			try{if (pageset != null)pageset.close();} catch(Exception e) {}
+		}
+		return total_pages;
+	}
+
+
+	
+	public List<Board> selectAll() throws Exception {
+		List<Board> results = new ArrayList<Board>();
+		
+		Connection conn = dataSource.getConnection();
+		PreparedStatement stmt = null;
+		ResultSet rs = null;
+		String sql = "select * from board order by cseq desc;";
+		
+		
+		 int absolutepage =1;
+		try {
+			stmt =  conn.prepareStatement(sql, ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_UPDATABLE);
+			rs = stmt.executeQuery();
+
+			while (rs.next()) {
+				Board board = new Board(rs.getInt("cseq"), rs.getInt("pnum"), rs.getString("id"),
+						rs.getString("name"), rs.getString("csub"), rs.getString("ccon"), rs.getDate("cdate"),
+						rs.getDate("cdate2"));
+				results.add(board);
+			}
+
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			try {
+				if (rs != null)
+					rs.close();
+			} catch (Exception e) {
+			}
+			try {
+				if (stmt != null)
+					stmt.close();
+			} catch (Exception e) {
+			}
+		}
+		return results;
+	}
+	
+	
+	public Board read(int cseq) throws Exception {
+		Connection conn;
+		conn = dataSource.getConnection();
+		Statement stmt = null;
+		ResultSet rs = null;
+		Board article = null;
+		//List<Board results = new ArrayList<Board>();
+		try {
+			stmt = conn.createStatement();
+			rs = stmt.executeQuery("select * from board where cseq=" + cseq );
+			
+			while (rs.next()) {
+				article = new Board(rs.getInt("cseq"), rs.getInt("pnum"), rs.getString("id"),
+						rs.getString("name"), rs.getString("csub"), rs.getString("ccon"), rs.getDate("cdate"),
+						rs.getDate("cdate2"));
+				}
+		} catch (Exception e) {
+			throw e;
+		} finally {
+				if (rs != null)		rs.close();
+				if (stmt != null)	stmt.close();
+			}
+		return article;
+	}
+
+	
+	public int insert(Board boardVO) throws Exception{
+		Connection conn;
+		conn = dataSource.getConnection();
+		PreparedStatement stmt = null;
+		try {
+			String sql = "insert into board( id, name, csub, ccon, cdate) values(  ?, ?, ?, ?, now() );";
+			stmt = conn.prepareStatement(sql);
+			stmt.setString(1, boardVO.getId());
+			stmt.setString(2, boardVO.getName());
+			stmt.setString(3, boardVO.getCsub());
+			stmt.setString(4, boardVO.getCcon());
+			
+			return stmt.executeUpdate();
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			
+				if (stmt != null) stmt.close();
+				if (conn != null)	conn.close();
+	}
+		
+	}
+
+	public int delete(int cseq)throws Exception {
+		Connection conn;
+		conn = dataSource.getConnection();
+		PreparedStatement pstmt = null;
+
+	try {
+		pstmt = conn.prepareStatement("DELETE FROM board WHERE cseq='" + cseq + "'");
+		return pstmt.executeUpdate();
+	} catch (Exception e) {
+		throw e;
+	} finally { if (pstmt != null) pstmt.close();
+	}	}
+	
+	public void update(String csub, String ccon, int cseq) throws Exception {
+
+		Connection conn;
+		conn = dataSource.getConnection();
+		PreparedStatement stmt = null;
+		
+		try {
+			stmt = conn.prepareStatement("update board set csub=?, ccon=?, cdate2=now() where cseq=?");
+			stmt.setString(1, csub);
+			stmt.setString(2, ccon);
+			stmt.setInt(3, cseq);
+			stmt.executeUpdate();
+			
+		} catch (Exception e) {
+			throw e;
+		} finally {
+			try {
+				if (stmt != null) stmt.close();
+				if (conn != null)	conn.close();
+			} catch (Exception e) {	}
+		}
+	}
+}
+	

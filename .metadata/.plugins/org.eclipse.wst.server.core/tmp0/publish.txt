@@ -1,0 +1,5 @@
+#Tomcat publish data
+#Fri Feb 22 09:48:38 KST 2019
+org.eclipse.jst.jee.server\:/binary\:D\:\\webapp2\\WebContent\\WEB-INF\\lib\\log4j-core-2.0-beta9.jar=WEB-INF/classes/log4j-core-2.0-beta9.jar
+org.eclipse.jst.jee.server\:/binary\:D\:\\proto\\doofun\\WebContent\\WEB-INF\\lib\\spring-web-5.1.0.RELEASE.jar=WEB-INF/lib/spring-web-5.1.0.RELEASE.jar
+org.eclipse.jst.jee.server\:/binary\:D\:\\proto\\doofun\\WebContent\\WEB-INF\\lib\\spring-web-5.1.0.RELEASE-sources.jar=WEB-INF/lib/spring-web-5.1.0.RELEASE-sources.jar
